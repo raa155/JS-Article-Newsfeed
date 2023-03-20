@@ -3,6 +3,13 @@ const btn = document.getElementById('search-button');
 const input = document.getElementById('search-input');
 const articleContainer = document.getElementById('articles-container');
 
+
+const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
 let articlesArray = [];
 
 // News API Key
@@ -16,6 +23,7 @@ async function getArticles() {
         const response = await fetch(apiUrl);
         articlesArray = await response.json();
         displayArticles();
+
     } catch (error) {
         // do something with error here
     }
@@ -24,7 +32,7 @@ async function getArticles() {
 // Create and Display Article Element inside Articles Container
 function displayArticles() {
     // Run Function for each object in Articles Array
-    articlesArray.forEach((article)=> {
+    articlesArray.articles.forEach((article)=> {
         // Create article Div 
         const container = document.createElement('div');
         // Create Title Element
@@ -48,11 +56,13 @@ function displayArticles() {
 
 // Add Event Listener to search button
 btn.addEventListener('click', ()=> {
-
 // check valid input after user searches and sets the query par
     if(input.value !== ''){
-        apiUrl = `https://newsapi.org/v2/everything?q=${input.value}&from=2023-02-19&sortBy=publishedAt&apiKey=${apiKey}`;
+        apiUrl = `https://newsapi.org/v2/everything?q=${input.value}&from=${year}-${month}-${day}&sortBy=popularity&apiKey=${apiKey}`;
     }
 // Get articles and display them.
     getArticles();
+
+// Clear Input Field after search
+    input.value = ""
 })
